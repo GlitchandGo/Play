@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Glitch &amp; Go - Login</title>
+  <style>
+    /* Basic styling for demonstration */
+    body { 
+      font-family: Arial, sans-serif;
+      background-color: #222;
+      color: #fff;
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container { 
+      width: 320px;
+      background: #333;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    h2 {
+      text-align: center;
+    }
+    form { 
+      display: flex; 
+      flex-direction: column;
+    }
+    input { 
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    button { 
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 4px;
+      background: #39ff14;
+      color: #000;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .link { 
+      color: #39ff14; 
+      cursor: pointer; 
+      text-decoration: underline; 
+      font-size: 0.9em;
+      margin: 5px 0;
+      text-align: center;
+    }
+    .hidden { 
+      display: none; 
+    }
+    .message { 
+      color: red; 
+      font-size: 0.9em; 
+      text-align: center;
+    }
+    p { text-align: center; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Login Form -->
+    <div id="login-form">
+      <h2>Login</h2>
+      <form onsubmit="login(event)">
+        <input type="text" id="login-username" placeholder="Username" required />
+        <input type="password" id="login-password" placeholder="Password" required />
+        <button type="submit">Log In</button>
+      </form>
+      <div class="link" onclick="showForgotPassword()">Forgot Password?</div>
+      <div class="link" onclick="showForgotUsername()">Forgot Username?</div>
+      <div class="link" onclick="showCreateAccount()">New to Glitch&amp;Go? Create an account!</div>
+      <div id="login-message" class="message"></div>
+    </div>
+
+    <!-- Forgot Password Form -->
+    <div id="forgot-password-form" class="hidden">
+      <h2>Forgot Password</h2>
+      <form onsubmit="forgotPassword(event)">
+        <input type="text" id="fp-username" placeholder="Username" required />
+        <button type="submit">Send Verification Code</button>
+      </form>
+      <div class="link" onclick="showLogin()">Back to Login</div>
+      <div id="forgot-password-message" class="message"></div>
+    </div>
+
+    <!-- Forgot Username Form -->
+    <div id="forgot-username-form" class="hidden">
+      <h2>Forgot Username</h2>
+      <form onsubmit="forgotUsername(event)">
+        <input type="email" id="fu-email" placeholder="Email Address" required />
+        <button type="submit">Send Username</button>
+      </form>
+      <div class="link" onclick="showLogin()">Back to Login</div>
+      <div id="forgot-username-message" class="message"></div>
+    </div>
+
+    <!-- Create Account Form -->
+    <div id="create-account-form" class="hidden">
+      <h2>Create Account</h2>
+      <form onsubmit="createAccount(event)">
+        <input type="text" id="ca-username" placeholder="Username" required />
+        <input type="password" id="ca-password" placeholder="Password" required />
+        <input type="password" id="ca-confirm-password" placeholder="Confirm Password" required />
+        <input type="email" id="ca-email" placeholder="Email Address" required />
+        <input type="text" id="ca-phone" placeholder="Phone Number (optional)" />
+        <button type="submit">Create Account</button>
+      </form>
+      <div class="link" onclick="showLogin()">Back to Login</div>
+      <div id="create-account-message" class="message"></div>
+    </div>
+
+    <!-- Verification Code Form -->
+    <div id="verification-form" class="hidden">
+      <h2>Verification Code</h2>
+      <p>Please do not close this tab! This may take up to 24 hours.</p>
+      <form onsubmit="verifyCode(event)">
+        <input type="text" id="vc-code" placeholder="6-digit Code" required pattern="\\d{6}" />
+        <button type="submit">Verify</button>
+      </form>
+      <div id="verification-message" class="message"></div>
+    </div>
+  </div>
+
+  <script>
+    // Global variables to manage pending account creation/reset and verification code attempts.
+    let pendingAccount = null;
+    let generatedCode = "";
+    let attemptCount = 0;
+
+    // Utility function to show a given form and hide the others.
+    function showForm(formId) {
+      document.querySelectorAll('.container > div').forEach(div => {
+        div.classList.add('hidden');
+      });
+      document.getElementById(formId).classList.remove('hidden');
+      // Clear any messages in all forms.
+      document.querySelectorAll('.message').forEach(m => m.textContent = "");
+    }
+
+    function showLogin() { showForm('login-form'); }
+    function showForgotPassword() { showForm('forgot-password-form'); }
+    function showForgotUsername() { showForm('forgot-username-form'); }
+    function showCreateAccount() { showForm('create-account-form'); }
+    function showVerification() { showForm('verification-form'); }
+
+    // Retrieve accounts from localStorage (stored as an object with usernames as keys)
+    function getAccounts() {
+      const accounts = localStorage.getItem('accounts');
+      return accounts ? JSON.parse(accounts) : {};
+    }
+
+    // Save accounts back to localStorage
+    function saveAccounts(accounts) {
+      localStorage.setItem('accounts', JSON.stringify(accounts));
+    }
+
+    // Login Functionality
+    function login(e) {
+      e.preventDefault();
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+      const accounts = getAccounts();
+      const messageEl = document.getElementById('login-message');
+
+      if (accounts[username] && accounts[username].password === password) {
+        // Save as current user for persistent login.
+        localStorage.setItem('currentUser', username);
+        messageEl.style.color = "green";
+        messageEl.textContent = "Login successful! Redirecting...";
+        setTimeout(() => {
+          window.location.href = "home.html";
+        }, 1000);
+      } else {
+        messageEl.style.color = "red";
+        messageEl.textContent = "Invalid username or password.";
+      }
+    }
+
+    // Forgot Password: Lookup username and simulate sending a verification code.
+    function forgotPassword(e) {
+      e.preventDefault();
+      const username = document.getElementById('fp-username').value;
+      const accounts = getAccounts();
+      const messageEl = document.getElementById('forgot-password-message');
+
+      if (accounts[username]) {
+        alert("Alert: Sending verification code for password reset for " + username);
+        // Set pendingAccount to the username string to denote a password reset.
+        pendingAccount = username;
+        generatedCode = String(Math.floor(100000 + Math.random() * 900000));
+        attemptCount = 0;
+        console.log("Generated Verification Code (Password Reset):", generatedCode);
+        showVerification();
+      } else {
+        messageEl.textContent = "Invalid Username.";
+      }
+    }
+
+    // Forgot Username: Lookup account by email.
+    function forgotUsername(e) {
+      e.preventDefault();
+      const email = document.getElementById('fu-email').value;
+      const accounts = getAccounts();
+      const messageEl = document.getElementById('forgot-username-message');
+      let found = false;
+      for (let user in accounts) {
+        if (accounts[user].email === email) {
+          alert("Alert: Your username is: " + user);
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        messageEl.textContent = "Email not found.";
+      }
+    }
+
+    // Create Account: Validate inputs and then send a verification code.
+    function createAccount(e) {
+      e.preventDefault();
+      const username = document.getElementById('ca-username').value;
+      const password = document.getElementById('ca-password').value;
+      const confirmPassword = document.getElementById('ca-confirm-password').value;
+      const email = document.getElementById('ca-email').value;
+      const phone = document.getElementById('ca-phone').value;
+      const accounts = getAccounts();
+      const messageEl = document.getElementById('create-account-message');
+
+      if (accounts[username]) {
+        messageEl.textContent = "Username taken.";
+        return;
+      }
+      if (password !== confirmPassword) {
+        messageEl.textContent = "Passwords do not match.";
+        return;
+      }
+
+      // Create pending account object for new account creation.
+      pendingAccount = { username, password, email, phone };
+      generatedCode = String(Math.floor(100000 + Math.random() * 900000));
+      attemptCount = 0;
+      console.log("Generated Verification Code (Account Creation):", generatedCode);
+      alert("Alert: New account creation initiated for " + username);
+      // Here you could also notify the admin via additional mechanisms.
+      showVerification();
+    }
+
+    // Verification Code: Check the user input against generatedCode.
+    function verifyCode(e) {
+      e.preventDefault();
+      const codeInput = document.getElementById('vc-code').value;
+      const messageEl = document.getElementById('verification-message');
+
+      if (codeInput === generatedCode) {
+        // Verification successful.
+        if (typeof pendingAccount === "object" && pendingAccount.username) {
+          // Process account creation.
+          const accounts = getAccounts();
+          accounts[pendingAccount.username] = {
+            password: pendingAccount.password,
+            email: pendingAccount.email,
+            phone: pendingAccount.phone
+          };
+          saveAccounts(accounts);
+          localStorage.setItem('currentUser', pendingAccount.username);
+          messageEl.style.color = "green";
+          messageEl.textContent = "Account verified! Redirecting to home page...";
+          pendingAccount = null;
+          setTimeout(() => {
+            window.location.href = "home.html";
+          }, 1000);
+        } else if (typeof pendingAccount === "string") {
+          // Process password reset (not fully implemented—could allow password change).
+          messageEl.style.color = "green";
+          messageEl.textContent = "Verification successful! Please reset your password.";
+          pendingAccount = null;
+          // You could add a password reset form here.
+        }
+      } else {
+        attemptCount++;
+        if (attemptCount >= 5) {
+          messageEl.textContent = "Too many incorrect attempts. Process aborted.";
+          pendingAccount = null;
+          generatedCode = "";
+          attemptCount = 0;
+          setTimeout(() => {
+            showLogin();
+          }, 2000);
+        } else {
+          messageEl.textContent = "Incorrect code. Attempts left: " + (5 - attemptCount);
+        }
+      }
+    }
+
+    // On page load, check if a user is already logged in.
+    window.onload = function() {
+      if(localStorage.getItem('currentUser')) {
+        window.location.href = "home.html";
+      }
+    }
+  </script>
+</body>
+</html>

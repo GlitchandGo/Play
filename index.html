@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Glitch and Go Games</title>
+  <!-- Import fonts: Orbitron for the logo & Fredoka One for our chunky/neon vibe -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet" />
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* CLASSIC STATIC RAINBOW GRADIENT BACKGROUND */
+    body {
+      font-family: 'Fredoka One', cursive;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #AEDFF7;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+      background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+    }
+
+    /* HEADER & LOGO */
+    header {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5em;
+      color: #39ff14;
+      margin-bottom: 10px;
+      animation: glitch-pulsate 3s infinite;
+      transition: filter 0.3s;
+    }
+    .logo:hover {
+      filter: brightness(125%);
+    }
+    @keyframes glitch-pulsate {
+      0%   { transform: scale(1); text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14; }
+      10%  { transform: scale(1.03) translate(2px, -2px); text-shadow: 2px 2px 5px #39ff14, -2px -2px 5px #39ff14; }
+      20%  { transform: scale(1) translate(-2px, 2px); text-shadow: -2px 2px 5px #39ff14, 2px -2px 5px #39ff14; }
+      30%  { transform: scale(1.03) translate(1px, -1px); text-shadow: 1px 1px 5px #39ff14, -1px -1px 5px #39ff14; }
+      40%  { transform: scale(1) translate(-1px, 1px); text-shadow: -1px 1px 5px #39ff14, 1px -1px 5px #39ff14; }
+      50%  { transform: scale(1.05); text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14; }
+      60%  { transform: scale(1) translate(2px, -2px); text-shadow: 2px 2px 5px #39ff14, -2px -2px 5px #39ff14; }
+      70%  { transform: scale(1.03) translate(-2px, 2px); text-shadow: -2px 2px 5px #39ff14, 2px -2px 5px #39ff14; }
+      80%  { transform: scale(1) translate(1px, -1px); text-shadow: 1px 1px 5px #39ff14, -1px -1px 5px #39ff14; }
+      90%  { transform: scale(1.05); text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14; }
+      100% { transform: scale(1); text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14; }
+    }
+
+    /* NAVIGATION MENU & BUTTONS */
+    nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+    nav a {
+      text-decoration: none;
+      font-weight: bold;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 10px;
+      transition: transform 0.2s, filter 0.2s;
+      font-size: 0.8em;
+      background: linear-gradient(45deg, red, blue, yellow, green, orange, purple);
+      background-size: 300% 300%;
+      animation: gradientShift 7s ease infinite, pulseButton 2s infinite;
+    }
+    nav a:hover {
+      transform: scale(1.1);
+      filter: brightness(120%);
+    }
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes pulseButton {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* CIRCLE BUTTON (User Icon) with gradual color fade animation */
+    .circle-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      background-color: #3949AB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      animation: circleColorChange 10s linear infinite;
+    }
+    @keyframes circleColorChange {
+      0%   { background-color: #3949AB; }
+      33%  { background-color: #FF5252; }
+      66%  { background-color: #FFEB3B; }
+      100% { background-color: #3949AB; }
+    }
+    .circle-btn svg {
+      width: 36px;
+      height: 36px;
+      fill: #333;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      font-size: 1.5em;
+      line-height: 1.6;
+      gap: 20px;
+    }
+    .welcome-text {
+      /* Additional welcome text styling */
+    }
+    .neon-tagline {
+      font-size: 1.2em;
+      color: #2ecc71;
+      margin: 20px 0;
+      animation: pulseGlitch 3s infinite;
+      transition: filter 0.3s;
+    }
+    .neon-tagline:hover {
+      filter: brightness(125%);
+    }
+    @keyframes pulseGlitch {
+      0%   { transform: scale(1); text-shadow: 0 0 5px #2ecc71, 0 0 10px #2ecc71, 0 0 15px #2ecc71; }
+      10%  { transform: scale(1.03) translate(2px, -2px); text-shadow: 2px 2px 5px #2ecc71, -2px -2px 5px #2ecc71; }
+      20%  { transform: scale(1) translate(-2px, 2px); text-shadow: -2px 2px 5px #2ecc71, 2px -2px 5px #2ecc71; }
+      30%  { transform: scale(1.03) translate(1px, -1px); text-shadow: 1px 1px 5px #2ecc71, -1px -1px 5px #2ecc71; }
+      40%  { transform: scale(1) translate(-1px, 1px); text-shadow: -1px 1px 5px #2ecc71, 1px -1px 5px #2ecc71; }
+      50%  { transform: scale(1.05); text-shadow: 0 0 5px #2ecc71, 0 0 10px #2ecc71; }
+      60%  { transform: scale(1) translate(2px, -2px); text-shadow: 2px 2px 5px #2ecc71, -2px -2px 5px #2ecc71; }
+      70%  { transform: scale(1.03) translate(-2px, 2px); text-shadow: -2px 2px 5px #2ecc71, 2px -2px 5px #2ecc71; }
+      80%  { transform: scale(1) translate(1px, -1px); text-shadow: 1px 1px 5px #2ecc71, -1px -1px 5px #2ecc71; }
+      90%  { transform: scale(1.05); text-shadow: 0 0 5px #2ecc71, 0 0 10px #2ecc71; }
+      100% { transform: scale(1); text-shadow: 0 0 5px #2ecc71, 0 0 10px #2ecc71; }
+    }
+
+    /* EXTRA BUTTONS */
+    .extra-buttons {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .extra-buttons button {
+      padding: 10px 20px;
+      font-size: 1em;
+      font-weight: bold;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, filter 0.2s;
+      font-family: 'Fredoka One', cursive;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+      background: linear-gradient(45deg, red, blue, yellow, green, orange, purple);
+      background-size: 300% 300%;
+      animation: gradientShift 7s ease infinite, pulseButton 2s infinite;
+    }
+    .extra-buttons button:hover {
+      transform: scale(1.05);
+      filter: brightness(120%);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.8em;
+      background: transparent;
+      text-shadow: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Glitch &amp; Go</div>
+    <nav>
+      <a href="#">Games</a>
+      <a href="#">Proxies</a>
+      <a href="#">Premium</a>
+      <a href="#">Contact Us</a>
+    </nav>
+    <!-- Circle button routes based on login status -->
+    <button class="circle-btn" onclick="window.location.href='login.html'">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+      </svg>
+    </button>
+  </header>
+  <main>
+    <div class="welcome-text">
+      Welcome to Glitch &amp; Go! Enjoy our selection of Games and Proxies, by us, for you! If anything is blocked/not working, contact us!
+    </div>
+    <div class="neon-tagline">
+      Where gaming meets the future!
+    </div>
+    <div class="extra-buttons">
+      <button class="update-log">Update Log</button>
+      <button class="newsletter">Newsletter</button>
+    </div>
+  </main>
+  <footer>
+    Site Version 1.0.0. ©2025 Glitch And Go. All rights reserved.
+  </footer>
+  <script>
+    window.onload = function() {
+      if(localStorage.getItem('currentUser')) {
+        console.log("User already logged in:", localStorage.getItem('currentUser'));
+        // Change the circle button to redirect to Account.html if logged in.
+        const circleBtn = document.querySelector('.circle-btn');
+        if(circleBtn) {
+          circleBtn.onclick = function() {
+            window.location.href = 'Account.html';
+          };
+        }
+      }
+    };
+  </script>
+</body>
+</html>

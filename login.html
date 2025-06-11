@@ -150,7 +150,7 @@
       font-size: 0.9em;
     }
 
-    /* Button Styling: Glitch Pulsation & Gradient Shift for general buttons */
+    /* Button Styling: Default buttons have a gradient effect with pulsation */
     button {
       padding: 10px;
       margin: 10px 0;
@@ -180,10 +180,14 @@
       50%  { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
-    /* Solid-colored buttons for Manage Accounts */
-    .solid-orange { background-color: orange; color: #fff; animation: none; }
-    .solid-green { background-color: green; color: #fff; animation: none; }
-    .solid-yellow { background-color: yellow; color: #000; animation: none; }
+    /* Solid-colored buttons for Account Management (override gradient effects) */
+    .solid-blue    { background-color: blue; color: #fff; animation: none; }
+    .solid-green   { background-color: green; color: #fff; animation: none; }
+    .solid-yellow  { background-color: yellow; color: #000; animation: none; }
+    .solid-purple  { background-color: purple; color: #fff; animation: none; }
+    .solid-orange  { background-color: orange; color: #fff; animation: none; }
+    .solid-gray    { background-color: gray; color: #fff; animation: none; }
+    .solid-dark    { background-color: #444; color: #fff; animation: none; }
     /* Red Delete Button */
     .delete-btn {
       background: linear-gradient(45deg, darkred, red);
@@ -232,6 +236,7 @@
       <div id="login-message" class="message"></div>
     </div>
 
+    <!-- FORGOT PASSWORD FORM -->
     <div id="forgot-password-form" class="hidden">
       <h2>Forgot Password</h2>
       <form onsubmit="forgotPassword(event)">
@@ -242,6 +247,7 @@
       <div id="forgot-password-message" class="message"></div>
     </div>
 
+    <!-- FORGOT USERNAME FORM -->
     <div id="forgot-username-form" class="hidden">
       <h2>Forgot Username</h2>
       <form onsubmit="forgotUsername(event)">
@@ -252,656 +258,709 @@
       <div id="forgot-username-message" class="message"></div>
     </div>
 
-    <div id="create-account-form" class="hidden">
-      <h2>Create Account</h2>
-      <form onsubmit="createAccount(event)">
-        <input type="text" id="ca-username" placeholder="Username" required />
-        <input type="email" id="ca-email" placeholder="Email Address" required />
-        <input type="text" id="ca-phone" placeholder="Phone Number (optional)" />
-        <button type="submit">Submit Application</button>
-      </form>
-      <div class="link" onclick="showLogin()">Back to Login</div>
-      <div id="create-account-message" class="message"></div>
-    </div>
+    <!-- CREATE ACCOUNT FORM -->
+<div id="create-account-form" class="hidden">
+  <h2>Create Account</h2>
+  <form onsubmit="createAccount(event)">
+    <input type="text" id="ca-username" placeholder="Username" required />
+    <input type="email" id="ca-email" placeholder="Email Address" required />
+    <input type="text" id="ca-phone" placeholder="Phone Number (optional)" />
+    <button type="submit">Submit Application</button>
+  </form>
+  <div class="link" onclick="showLogin()">Back to Login</div>
+  <div id="create-account-message" class="message"></div>
+</div>
 
-    <div id="verification-form" class="hidden">
-      <h2>Account Verification</h2>
-      <p>Within the next 24 hours, you will receive a verification email.</p>
-      <p>
-        Reply with “Yes, this is me. I would like to create an account”
-        and we will send you a password to use.
-      </p>
-      <p><strong>Note:</strong> Failure to respond within 24 hours may result in suspension.</p>
-      <div class="link" onclick="showLogin()">Back to Login</div>
-    </div>
+<!-- VERIFICATION FORM -->
+<div id="verification-form" class="hidden">
+  <h2>Account Verification</h2>
+  <p>Within the next 24 hours, you will receive a verification email.</p>
+  <p>
+    Reply with “Yes, this is me. I would like to create an account”
+    and we will send you a password to use.
+  </p>
+  <p><strong>Note:</strong> Failure to respond within 24 hours may result in suspension.</p>
+  <div class="link" onclick="showLogin()">Back to Login</div>
+</div>
 
-    <!-- ACCOUNT MANAGEMENT (Profile & Settings) -->
-    <div id="profile-section" class="hidden">
-      <h2 class="animated-text">Account Management</h2>
-      <p id="account-info" class="animated-text"></p>
-      <p>Role: <span id="account-role" class="animated-text"></span></p>
-      <p>Edit Bio:</p>
-      <textarea id="account-bio" placeholder="Enter your bio"></textarea><br>
-      <button onclick="updateBio()">Save Bio</button>
-      <br>
-      <button onclick="changeUsername()">Change Username</button>
-      <button onclick="changePassword()">Change Password</button>
-      <br>
-      <a href="#" onclick="sendPasswordResetRequest()">Forgot Password?</a>
-      <br><br>
-      <!-- Self-Delete button available to all users -->
-      <button onclick="deleteMyAccount()">Delete My Account</button>
-      <br><br>
-      <!-- For normal users -->
-      <button id="request-admin-btn" class="hidden" onclick="requestAdminAccess()">Request Admin Access</button>
-      <!-- For admin/elder accounts -->
-      <button id="manage-accounts-btn" class="hidden" onclick="showManageAccounts()">Manage Accounts</button>
-      <!-- For elder admins only: Manage Requests -->
-      <button id="manage-requests-btn" class="hidden" onclick="showManageRequests()">Manage Requests</button>
-      <br><br>
-      <!-- Placeholder for game history -->
-      <h3 class="animated-text">Recent Game History</h3>
-      <p class="animated-text">(Game history feature coming soon...)</p>
-      <br>
-      <button onclick="logout()">Log Out</button>
-    </div>
+<!-- ACCOUNT MANAGEMENT (Profile & Settings) -->
+<div id="profile-section" class="hidden">
+  <h2 class="animated-text">Account Management</h2>
+  <p id="account-info" class="animated-text"></p>
+  <p>Role: <span id="account-role" class="animated-text"></span></p>
+  <p>Edit Bio:</p>
+  <textarea id="account-bio" placeholder="Enter your bio"></textarea><br>
+  <button onclick="updateBio()">Save Bio</button>
+  <br>
+  <button onclick="changeUsername()">Change Username</button>
+  <button onclick="changePassword()">Change Password</button>
+  <br>
+  <a href="#" onclick="sendPasswordResetRequest()">Forgot Password?</a>
+  <br><br>
+  <!-- Self-Delete button available to all users -->
+  <button onclick="deleteMyAccount()">Delete My Account</button>
+  <br><br>
+  <!-- For normal users -->
+  <button id="request-admin-btn" class="hidden" onclick="requestAdminAccess()">Request Admin Access</button>
+  <!-- For admin/elder accounts -->
+  <button id="manage-accounts-btn" class="hidden" onclick="showManageAccounts()">Manage Accounts</button>
+  <!-- For elder admins only: Manage Requests -->
+  <button id="manage-requests-btn" class="hidden" onclick="showManageRequests()">Manage Requests</button>
+  <!-- For regular admins only: Request Elder Admin (once every 7 days) -->
+  <button id="request-elder-btn" class="hidden" onclick="requestElderAdmin()">Request Elder Admin</button>
+  <br><br>
+  <!-- Placeholder for game history -->
+  <h3 class="animated-text">Recent Game History</h3>
+  <p class="animated-text">(Game history feature coming soon...)</p>
+  <br>
+  <button onclick="logout()">Log Out</button>
+</div>
 
-    <!-- ADMIN: Manage Accounts List -->
-    <div id="manage-accounts-section" class="hidden">
-      <h2>Manage User Accounts</h2>
-      <ul id="all-accounts-list"></ul>
-      <!-- In this section, the buttons will be solid colored -->
-      <button id="delete-account-btn" class="delete-btn" onclick="deleteAccount()">Delete Account</button>
-      <button id="ban-account-btn" class="solid-orange" onclick="banAccount()">Ban Account</button>
-      <button id="toggle-admin-btn" class="solid-green hidden" onclick="toggleAdminAccess()">Toggle Admin Access</button>
-      <button id="grant-premium-btn" class="solid-yellow hidden" onclick="grantPremiumAccess()">Grant Premium Access</button>
-      <br>
-      <button onclick="backToAccountsList()">Back to Profile</button>
-    </div>
+<!-- ADMIN: Manage Accounts List -->
+<div id="manage-accounts-section" class="hidden">
+  <h2>Manage User Accounts</h2>
+  <ul id="all-accounts-list"></ul>
+  <!-- In this section, the buttons will be solid-colored -->
+  <button id="delete-account-btn" class="delete-btn" onclick="deleteAccount()">Delete Account</button>
+  <button id="ban-account-btn" class="solid-orange" onclick="banAccount()">Ban Account</button>
+  <button id="toggle-admin-btn" class="solid-green hidden" onclick="toggleAdminAccess()">Toggle Admin Access</button>
+  <button id="grant-premium-btn" class="solid-yellow hidden" onclick="grantPremiumAccess()">Grant Premium Access</button>
+  <br>
+  <button onclick="backToAccountsList()">Back to Profile</button>
+</div>
 
-    <!-- ADMIN: Individual Account Details -->
-    <div id="account-details-section" class="hidden">
-      <h2 id="account-details-heading"></h2>
-      <p id="account-details-info"></p>
-      <!-- For individual account management actions, we reuse the solid buttons: -->
-      <button id="delete-account-btn" class="delete-btn" onclick="deleteAccount()">Delete Account</button>
-      <button id="ban-account-btn" class="solid-orange" onclick="banAccount()">Ban Account</button>
-      <button id="unban-account-btn" class="hidden" onclick="unbanAccount()">Unban Account</button>
-      <button id="toggle-admin-btn" class="solid-green hidden" onclick="toggleAdminAccess()">Toggle Admin Access</button>
-      <button id="grant-premium-btn" class="solid-yellow hidden" onclick="grantPremiumAccess()">Grant Premium Access</button>
-      <br>
-      <button onclick="backToAccountsList()">Back to Accounts List</button>
-    </div>
+<!-- ADMIN: Individual Account Details -->
+<div id="account-details-section" class="hidden">
+  <h2 id="account-details-heading"></h2>
+  <p id="account-details-info"></p>
+  <!-- For individual account management actions, we reuse the solid buttons: -->
+  <button id="delete-account-btn" class="delete-btn" onclick="deleteAccount()">Delete Account</button>
+  <button id="ban-account-btn" class="solid-orange" onclick="banAccount()">Ban Account</button>
+  <button id="unban-account-btn" class="hidden" onclick="unbanAccount()">Unban Account</button>
+  <button id="toggle-admin-btn" class="solid-green hidden" onclick="toggleAdminAccess()">Toggle Admin Access</button>
+  <button id="grant-premium-btn" class="solid-yellow hidden" onclick="grantPremiumAccess()">Grant Premium Access</button>
+  <br>
+  <button onclick="backToAccountsList()">Back to Accounts List</button>
+</div>
 
-    <!-- ADMIN: Manage Requests Section -->
-    <div id="manage-requests-section" class="hidden">
-      <h2>Manage Requests</h2>
-      <div id="pending-accounts-requests">
-        <h3>Pending Account Requests</h3>
-        <ul id="pending-accounts-list"></ul>
-      </div>
-      <div id="admin-access-requests">
-        <h3>Admin Access Requests</h3>
-        <ul id="admin-requests-list"></ul>
-      </div>
-      <button onclick="backToProfile()">Back to Profile</button>
-    </div>
+<!-- ADMIN: Manage Requests Section -->
+<div id="manage-requests-section" class="hidden">
+  <h2>Manage Requests</h2>
+  <div id="pending-accounts-requests">
+    <h3>Pending Account Requests</h3>
+    <ul id="pending-accounts-list"></ul>
   </div>
+  <div id="admin-access-requests">
+    <h3>Admin Access Requests</h3>
+    <ul id="admin-requests-list"></ul>
+  </div>
+  <!-- For Elder Admins: Newsletter, Password Reset, Username Reset Requests -->
+  <div id="newsletter-requests">
+    <h3>Newsletter Signup Requests</h3>
+    <ul id="newsletter-requests-list"></ul>
+  </div>
+  <div id="password-reset-requests">
+    <h3>Password Reset Requests</h3>
+    <ul id="password-reset-requests-list"></ul>
+  </div>
+  <div id="username-reset-requests">
+    <h3>Username Reset Requests</h3>
+    <ul id="username-reset-requests-list"></ul>
+  </div>
+  <button onclick="backToProfile()">Back to Profile</button>
+</div>
 
-  <footer>
-    Site Version 1.0.0. ©2025 Glitch And Go. All rights reserved.
-  </footer>
+<footer>
+  Site Version 1.0.0. ©2025 Glitch And Go. All rights reserved.
+</footer>
 
-  <script>
-    /* ------------- Initialization & Utility Functions ------------- */
-    function initAccounts() {
-      if (!localStorage.getItem('accounts')) {
-        let defaultAccounts = {
-          "GLITCH": {
-            password: "Glitch=Admin6967",
-            email: "glitch@example.com",
-            role: "elder",
-            bio: "I am GLITCH, the Elder Admin."
-          }
-        };
-        localStorage.setItem('accounts', JSON.stringify(defaultAccounts));
-      }
-    }
-    function getAccounts() {
-      return JSON.parse(localStorage.getItem('accounts') || "{}");
-    }
-    function saveAccounts(accounts) {
-      localStorage.setItem('accounts', JSON.stringify(accounts));
-    }
-    function getPendingAccounts() {
-      return JSON.parse(localStorage.getItem('pendingAccounts') || "[]");
-    }
-    function savePendingAccounts(list) {
-      localStorage.setItem('pendingAccounts', JSON.stringify(list));
-    }
-    function getAdminRequests() {
-      return JSON.parse(localStorage.getItem('adminRequests') || "[]");
-    }
-    function saveAdminRequests(list) {
-      localStorage.setItem('adminRequests', JSON.stringify(list));
-    }
-    
-    // Helper: Show a form section and hide others
-    function showForm(formId) {
-      document.querySelectorAll('.account-container > div').forEach(div => {
-        div.classList.add('hidden');
-      });
-      document.getElementById(formId).classList.remove('hidden');
-      document.querySelectorAll('.message').forEach(m => m.textContent = "");
-    }
-    function showLogin() { showForm('login-form'); }
-    function showForgotPassword() { showForm('forgot-password-form'); }
-    function showForgotUsername() { showForm('forgot-username-form'); }
-    function showCreateAccount() { showForm('create-account-form'); }
-    function showVerification() { showForm('verification-form'); }
-
-    /* ------------- Authentication Functions ------------- */
-    function login(e) {
-      e.preventDefault();
-      const username = document.getElementById('login-username').value.trim();
-      const password = document.getElementById('login-password').value.trim();
-      const accounts = getAccounts();
-      const messageEl = document.getElementById('login-message');
-      if (accounts[username] && accounts[username].password === password) {
-        // Check if account is banned.
-        if (accounts[username].isBanned) {
-          localStorage.setItem('currentUser', username);
-          localStorage.setItem('userRole', accounts[username].role || "user");
-          alert("Your account is banned. Please contact an Elder Admin for further information.");
-          return;
+<script>
+  /* ------------- Initialization & Utility Functions ------------- */
+  function initAccounts() {
+    if (!localStorage.getItem('accounts')) {
+      let defaultAccounts = {
+        "GLITCH": {
+          password: "Glitch=Admin6967",
+          email: "glitch@example.com",
+          role: "elder",
+          bio: "I am GLITCH, the Elder Admin."
         }
+      };
+      localStorage.setItem('accounts', JSON.stringify(defaultAccounts));
+    }
+  }
+  function getAccounts() {
+    return JSON.parse(localStorage.getItem('accounts') || "{}");
+  }
+  function saveAccounts(accounts) {
+    localStorage.setItem('accounts', JSON.stringify(accounts));
+  }
+  function getPendingAccounts() {
+    return JSON.parse(localStorage.getItem('pendingAccounts') || "[]");
+  }
+  function savePendingAccounts(list) {
+    localStorage.setItem('pendingAccounts', JSON.stringify(list));
+  }
+  function getAdminRequests() {
+    return JSON.parse(localStorage.getItem('adminRequests') || "[]");
+  }
+  function saveAdminRequests(list) {
+    localStorage.setItem('adminRequests', JSON.stringify(list));
+  }
+  
+  // Helper: Show a form section and hide others
+  function showForm(formId) {
+    document.querySelectorAll('.account-container > div').forEach(div => {
+      div.classList.add('hidden');
+    });
+    document.getElementById(formId).classList.remove('hidden');
+    document.querySelectorAll('.message').forEach(m => m.textContent = "");
+  }
+  function showLogin() { showForm('login-form'); }
+  function showForgotPassword() { showForm('forgot-password-form'); }
+  function showForgotUsername() { showForm('forgot-username-form'); }
+  function showCreateAccount() { showForm('create-account-form'); }
+  function showVerification() { showForm('verification-form'); }
+  
+  /* ------------- Authentication Functions ------------- */
+  function login(e) {
+    e.preventDefault();
+    const username = document.getElementById('login-username').value.trim();
+    const password = document.getElementById('login-password').value.trim();
+    const accounts = getAccounts();
+    const messageEl = document.getElementById('login-message');
+    if (accounts[username] && accounts[username].password === password) {
+      // Check if account is banned.
+      if (accounts[username].isBanned) {
         localStorage.setItem('currentUser', username);
         localStorage.setItem('userRole', accounts[username].role || "user");
-        messageEl.style.color = "green";
-        messageEl.textContent = "Login successful!";
-        setTimeout(() => {
-          showProfile();
-        }, 1000);
-      } else {
-        messageEl.style.color = "red";
-        messageEl.textContent = "Invalid username or password.";
-      }
-    }
-    function forgotPassword(e) {
-      e.preventDefault();
-      const username = document.getElementById('fp-username').value.trim();
-      const accounts = getAccounts();
-      const messageEl = document.getElementById('forgot-password-message');
-      if (accounts[username]) {
-        alert("A password reset request has been sent to Elder Admins.");
-        messageEl.textContent = "Please await a password reset email from an Elder Admin.";
-      } else {
-        messageEl.textContent = "Invalid username.";
-      }
-    }
-    function forgotUsername(e) {
-      e.preventDefault();
-      const email = document.getElementById('fu-email').value.trim();
-      const accounts = getAccounts();
-      const messageEl = document.getElementById('forgot-username-message');
-      let found = false;
-      for (let user in accounts) {
-        if (accounts[user].email && accounts[user].email.toLowerCase() === email.toLowerCase()) {
-          alert("A username reset request has been sent to Elder Admins for " + user + ".");
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        messageEl.textContent = "Email not found.";
-      }
-    }
-    function createAccount(e) {
-      e.preventDefault();
-      const username = document.getElementById('ca-username').value.trim();
-      const email = document.getElementById('ca-email').value.trim();
-      const phone = document.getElementById('ca-phone').value.trim();
-      const accounts = getAccounts();
-      const messageEl = document.getElementById('create-account-message');
-      if (accounts.hasOwnProperty(username)) {
-        messageEl.textContent = "Username already taken.";
+        alert("Your account is banned. Please contact an Elder Admin for further information.");
         return;
       }
-      for (let user in accounts) {
-        if (accounts[user].email && accounts[user].email.toLowerCase() === email.toLowerCase()) {
-          messageEl.textContent = "Email already in use.";
-          return;
-        }
-        if (phone && accounts[user].phone && accounts[user].phone === phone) {
-          messageEl.textContent = "Phone number already in use.";
-          return;
-        }
-      }
-      let pendingAccounts = getPendingAccounts();
-      for (let req of pendingAccounts) {
-        if (req.username.toLowerCase() === username.toLowerCase()) {
-          messageEl.textContent = "Username already taken (pending approval).";
-          return;
-        }
-        if (req.email && req.email.toLowerCase() === email.toLowerCase()) {
-          messageEl.textContent = "Email already in use (pending approval).";
-          return;
-        }
-        if (phone && req.phone && req.phone === phone) {
-          messageEl.textContent = "Phone number already in use (pending approval).";
-          return;
-        }
-      }
-      pendingAccounts.push({ username, email, phone });
-      savePendingAccounts(pendingAccounts);
-      alert("Your account application has been submitted for admin approval.");
-      showVerification();
-    }
-
-    /* ------------- Profile & Account Management Functions ------------- */
-function showProfile() {
-  showForm('profile-section');
-  updateProfileDisplay();
-}
-// This function updates the Profile display and also sets the proper background (via container class) based on role.
-function updateProfileDisplay() {
-  let currentUser = localStorage.getItem('currentUser');
-  if (!currentUser) { showLogin(); return; }
-  let accounts = getAccounts();
-
-  // If temporary admin access has expired, revert to user.
-  if (accounts[currentUser]?.role === "admin" && accounts[currentUser]?.adminExpires) {
-    if (Date.now() > accounts[currentUser].adminExpires) {
-      accounts[currentUser].role = "user";
-      delete accounts[currentUser].adminExpires;
-      saveAccounts(accounts);
+      localStorage.setItem('currentUser', username);
+      localStorage.setItem('userRole', accounts[username].role || "user");
+      messageEl.style.color = "green";
+      messageEl.textContent = "Login successful!";
+      setTimeout(() => {
+        showProfile();
+      }, 1000);
+    } else {
+      messageEl.style.color = "red";
+      messageEl.textContent = "Invalid username or password.";
     }
   }
-
-  let account = accounts[currentUser];
-  document.getElementById('account-info').innerText = "Logged in as: " + currentUser;
-  document.getElementById('account-role').innerText = account.role.charAt(0).toUpperCase() + account.role.slice(1);
-  document.getElementById('account-bio').value = account.bio || "";
-  
-  // Set container background based on role.
-  let container = document.getElementById('main-container');
-  container.classList.remove("user", "admin", "elder");
-  if (account.role === "elder") {
-    container.classList.add("elder");
-  } else if (account.role === "admin") {
-    container.classList.add("admin");
-  } else {
-    container.classList.add("user");
+  function forgotPassword(e) {
+    e.preventDefault();
+    const username = document.getElementById('fp-username').value.trim();
+    const accounts = getAccounts();
+    const messageEl = document.getElementById('forgot-password-message');
+    if (accounts[username]) {
+      alert("A password reset request has been sent to Elder Admins.");
+      messageEl.textContent = "Please await a password reset email from an Elder Admin.";
+    } else {
+      messageEl.textContent = "Invalid username.";
+    }
+  }
+  function forgotUsername(e) {
+    e.preventDefault();
+    const email = document.getElementById('fu-email').value.trim();
+    const accounts = getAccounts();
+    const messageEl = document.getElementById('forgot-username-message');
+    let found = false;
+    for (let user in accounts) {
+      if (accounts[user].email && accounts[user].email.toLowerCase() === email.toLowerCase()) {
+        alert("A username reset request has been sent to Elder Admins for " + user + ".");
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      messageEl.textContent = "Email not found.";
+    }
+  }
+  function createAccount(e) {
+    e.preventDefault();
+    const username = document.getElementById('ca-username').value.trim();
+    const email = document.getElementById('ca-email').value.trim();
+    const phone = document.getElementById('ca-phone').value.trim();
+    const accounts = getAccounts();
+    const messageEl = document.getElementById('create-account-message');
+    if (accounts.hasOwnProperty(username)) {
+      messageEl.textContent = "Username already taken.";
+      return;
+    }
+    for (let user in accounts) {
+      if (accounts[user].email && accounts[user].email.toLowerCase() === email.toLowerCase()) {
+        messageEl.textContent = "Email already in use.";
+        return;
+      }
+      if (phone && accounts[user].phone && accounts[user].phone === phone) {
+        messageEl.textContent = "Phone number already in use.";
+        return;
+      }
+    }
+    let pendingAccounts = getPendingAccounts();
+    for (let req of pendingAccounts) {
+      if (req.username.toLowerCase() === username.toLowerCase()) {
+        messageEl.textContent = "Username already taken (pending approval).";
+        return;
+      }
+      if (req.email && req.email.toLowerCase() === email.toLowerCase()) {
+        messageEl.textContent = "Email already in use (pending approval).";
+        return;
+      }
+      if (phone && req.phone && req.phone === phone) {
+        messageEl.textContent = "Phone number already in use (pending approval).";
+        return;
+      }
+    }
+    pendingAccounts.push({ username, email, phone });
+    savePendingAccounts(pendingAccounts);
+    alert("Your account application has been submitted for admin approval.");
+    showVerification();
   }
   
-  // Manage Buttons visibility.
-  if (account.role === "user") {
-    document.getElementById('request-admin-btn').classList.remove('hidden');
-    document.getElementById('manage-accounts-btn').classList.add('hidden');
-    document.getElementById('manage-requests-btn').classList.add('hidden');
-  } else if (account.role === "admin" || account.role === "premium") {
-    document.getElementById('request-admin-btn').classList.add('hidden');
-    document.getElementById('manage-accounts-btn').classList.remove('hidden');
-    document.getElementById('manage-requests-btn').classList.add('hidden');
-  } else if (account.role === "elder") {
-    document.getElementById('request-admin-btn').classList.add('hidden');
-    document.getElementById('manage-accounts-btn').classList.remove('hidden');
-    document.getElementById('manage-requests-btn').classList.remove('hidden');
-  } else {
-    document.getElementById('request-admin-btn').classList.add('hidden');
-    document.getElementById('manage-accounts-btn').classList.add('hidden');
-    document.getElementById('manage-requests-btn').classList.add('hidden');
+  /* ------------- Profile & Account Management Functions ------------- */
+  function showProfile() {
+    showForm('profile-section');
+    updateProfileDisplay();
   }
-}
-function updateBio() {
-  let currentUser = localStorage.getItem('currentUser');
-  if (!currentUser) return;
-  let accounts = getAccounts();
-  accounts[currentUser].bio = document.getElementById('account-bio').value;
-  saveAccounts(accounts);
-  alert("Bio updated successfully.");
-  updateProfileDisplay();
-}
-function changeUsername() {
-  let currentUser = localStorage.getItem('currentUser');
-  let accounts = getAccounts();
-  let currentPassword = prompt("Enter your current password:");
-  if (currentPassword !== accounts[currentUser].password) {
-    alert("Incorrect password.");
-    return;
-  }
-  let newUsername = prompt("Enter your new username:");
-  if (!newUsername) return;
-  if (accounts.hasOwnProperty(newUsername)) {
-    alert("Username already taken.");
-    return;
-  }
-  accounts[newUsername] = accounts[currentUser];
-  delete accounts[currentUser];
-  saveAccounts(accounts);
-  localStorage.setItem('currentUser', newUsername);
-  alert("Username changed successfully. Please reload the page.");
-  updateProfileDisplay();
-}
-function changePassword() {
-  let currentUser = localStorage.getItem('currentUser');
-  let accounts = getAccounts();
-  let currentPassword = prompt("Enter your current password:");
-  if (currentPassword !== accounts[currentUser].password) {
-    alert("Incorrect password.");
-    return;
-  }
-  let newPassword = prompt("Enter your new password:");
-  if (!newPassword) return;
-  accounts[currentUser].password = newPassword;
-  saveAccounts(accounts);
-  alert("Password changed successfully.");
-}
-function sendPasswordResetRequest() {
-  alert("Password reset request sent to Elder Admins.");
-}
-// Self-delete for any user.
-function deleteMyAccount() {
-  let currentUser = localStorage.getItem('currentUser');
-  if (confirm("Are you sure you want to delete your account: " + currentUser + "?")) {
+  // This function updates the Profile display and also sets the proper background (via container class) based on role.
+  function updateProfileDisplay() {
+    let currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) { showLogin(); return; }
     let accounts = getAccounts();
+  
+    // If temporary admin access has expired, revert to user.
+    if (accounts[currentUser]?.role === "admin" && accounts[currentUser]?.adminExpires) {
+      if (Date.now() > accounts[currentUser].adminExpires) {
+        accounts[currentUser].role = "user";
+        delete accounts[currentUser].adminExpires;
+        saveAccounts(accounts);
+      }
+    }
+  
+    let account = accounts[currentUser];
+    document.getElementById('account-info').innerText = "Logged in as: " + currentUser;
+    document.getElementById('account-role').innerText = account.role.charAt(0).toUpperCase() + account.role.slice(1);
+    document.getElementById('account-bio').value = account.bio || "";
+    
+    // Set container background based on role.
+    let container = document.getElementById('main-container');
+    container.classList.remove("user", "admin", "elder");
+    if (account.role === "elder") {
+      container.classList.add("elder");
+    } else if (account.role === "admin") {
+      container.classList.add("admin");
+    } else {
+      container.classList.add("user");
+    }
+    
+    // Manage Buttons visibility.
+    if (account.role === "user") {
+      document.getElementById('request-admin-btn').classList.remove('hidden');
+      document.getElementById('manage-accounts-btn').classList.add('hidden');
+      document.getElementById('manage-requests-btn').classList.add('hidden');
+      document.getElementById('request-elder-btn').classList.add('hidden');
+    } else if (account.role === "admin" || account.role === "premium") {
+      document.getElementById('request-admin-btn').classList.add('hidden');
+      document.getElementById('manage-accounts-btn').classList.remove('hidden');
+      document.getElementById('manage-requests-btn').classList.add('hidden');
+      // Show Request Elder Admin button for admins.
+      if (account.role === "admin") {
+        document.getElementById('request-elder-btn').classList.remove('hidden');
+      } else {
+        document.getElementById('request-elder-btn').classList.add('hidden');
+      }
+    } else if (account.role === "elder") {
+      document.getElementById('request-admin-btn').classList.add('hidden');
+      document.getElementById('manage-accounts-btn').classList.remove('hidden');
+      document.getElementById('manage-requests-btn').classList.remove('hidden');
+      // Hide Request Elder Admin button for elders.
+      document.getElementById('request-elder-btn').classList.add('hidden');
+    } else {
+      document.getElementById('request-admin-btn').classList.add('hidden');
+      document.getElementById('manage-accounts-btn').classList.add('hidden');
+      document.getElementById('manage-requests-btn').classList.add('hidden');
+      document.getElementById('request-elder-btn').classList.add('hidden');
+    }
+  }
+  function updateBio() {
+    let currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) return;
+    let accounts = getAccounts();
+    accounts[currentUser].bio = document.getElementById('account-bio').value;
+    saveAccounts(accounts);
+    alert("Bio updated successfully.");
+    updateProfileDisplay();
+  }
+  function changeUsername() {
+    let currentUser = localStorage.getItem('currentUser');
+    let accounts = getAccounts();
+    let currentPassword = prompt("Enter your current password:");
+    if (currentPassword !== accounts[currentUser].password) {
+      alert("Incorrect password.");
+      return;
+    }
+    let newUsername = prompt("Enter your new username:");
+    if (!newUsername) return;
+    if (accounts.hasOwnProperty(newUsername)) {
+      alert("Username already taken.");
+      return;
+    }
+    accounts[newUsername] = accounts[currentUser];
     delete accounts[currentUser];
     saveAccounts(accounts);
+    localStorage.setItem('currentUser', newUsername);
+    alert("Username changed successfully. Please reload the page.");
+    updateProfileDisplay();
+  }
+  function changePassword() {
+    let currentUser = localStorage.getItem('currentUser');
+    let accounts = getAccounts();
+    let currentPassword = prompt("Enter your current password:");
+    if (currentPassword !== accounts[currentUser].password) {
+      alert("Incorrect password.");
+      return;
+    }
+    let newPassword = prompt("Enter your new password:");
+    if (!newPassword) return;
+    accounts[currentUser].password = newPassword;
+    saveAccounts(accounts);
+    alert("Password changed successfully.");
+  }
+  function sendPasswordResetRequest() {
+    alert("Password reset request sent to Elder Admins.");
+  }
+  // Self-delete for any user.
+  function deleteMyAccount() {
+    let currentUser = localStorage.getItem('currentUser');
+    if (confirm("Are you sure you want to delete your account: " + currentUser + "?")) {
+      let accounts = getAccounts();
+      delete accounts[currentUser];
+      saveAccounts(accounts);
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('userRole');
+      alert("Your account has been deleted.");
+      showLogin();
+    }
+  }
+  function requestAdminAccess() {
+    // For simplicity, add a new request to adminRequests.
+    let currentUser = localStorage.getItem('currentUser');
+    let requests = getAdminRequests();
+    requests.push({ username: currentUser, submittedAt: Date.now() });
+    saveAdminRequests(requests);
+    alert("Admin access request sent to Elder Admins.");
+  }
+  // Request Elder Admin function: only available to regular admins, limited to once every 7 days.
+  function requestElderAdmin() {
+    let lastRequest = localStorage.getItem('lastElderRequest');
+    let now = Date.now();
+    if (lastRequest && now - lastRequest < 7 * 24 * 60 * 60 * 1000) {
+      alert("You can only request Elder Admin access once every 7 days.");
+    } else {
+      localStorage.setItem('lastElderRequest', now);
+      alert("Your request for Elder Admin access has been submitted!");
+    }
+  }
+  function logout() {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userRole');
-    alert("Your account has been deleted.");
     showLogin();
   }
-}
-function requestAdminAccess() {
-  // For simplicity, add a new request to adminRequests.
-  let currentUser = localStorage.getItem('currentUser');
-  let requests = getAdminRequests();
-  requests.push({ username: currentUser, submittedAt: Date.now() });
-  saveAdminRequests(requests);
-  alert("Admin access request sent to Elder Admins.");
-}
-function logout() {
-  localStorage.removeItem('currentUser');
-  localStorage.removeItem('userRole');
-  showLogin();
-}
-
-/* ------------- Manage Accounts (Admin Only) ------------- */
-function showManageAccounts() {
-  showForm('manage-accounts-section');
-  loadAllAccounts();
-}
-function loadAllAccounts() {
-  let accounts = getAccounts();
-  let currentUser = localStorage.getItem('currentUser');
-  let currentRole = getAccounts()[currentUser].role;
-  let listElem = document.getElementById('all-accounts-list');
-  listElem.innerHTML = "";
-  for (let uname in accounts) {
-    // For admin: show only normal users; for elder: skip other elders.
-    if (currentRole === "admin" && accounts[uname].role !== "user") continue;
-    if (currentRole === "elder" && accounts[uname].role === "elder") continue;
-    let item = document.createElement('li');
-    item.innerHTML = `${uname} - ${accounts[uname].email || "No Email"} ${accounts[uname].phone ? " - " + accounts[uname].phone : ""}`;
-    item.style.cursor = "pointer";
-    item.onclick = function() { showAccountDetails(uname); };
-    listElem.appendChild(item);
+  
+  /* ------------- Manage Accounts (Admin Only) ------------- */
+  function showManageAccounts() {
+    showForm('manage-accounts-section');
+    loadAllAccounts();
   }
-}
-let currentAccountManagementUser = "";
-function showAccountDetails(uname) {
-  currentAccountManagementUser = uname;
-  let accounts = getAccounts();
-  let acc = accounts[uname];
-  document.getElementById('account-details-heading').innerText = "Manage Account: " + uname;
-  document.getElementById('account-details-info').innerText =
-    "Email: " + (acc.email || "") + " | Phone: " + (acc.phone || "N/A") + " | Role: " + acc.role;
-  // Toggle Ban/Unban based on status.
-  if (acc.isBanned) {
-    document.getElementById('ban-account-btn').classList.add('hidden');
-    document.getElementById('unban-account-btn').classList.remove('hidden');
-  } else {
-    document.getElementById('ban-account-btn').classList.remove('hidden');
-    document.getElementById('unban-account-btn').classList.add('hidden');
-  }
-  let currentRole = getAccounts()[localStorage.getItem('currentUser')].role;
-  if (currentRole === "elder") {
-    document.getElementById('toggle-admin-btn').classList.remove('hidden');
-    if (acc.role === "admin") {
-      document.getElementById('toggle-admin-btn').innerText = "Remove Admin Access";
-    } else {
-      document.getElementById('toggle-admin-btn').innerText = "Grant Admin Access";
+  function loadAllAccounts() {
+    let accounts = getAccounts();
+    let currentUser = localStorage.getItem('currentUser');
+    let currentRole = getAccounts()[currentUser].role;
+    let listElem = document.getElementById('all-accounts-list');
+    listElem.innerHTML = "";
+    for (let uname in accounts) {
+      // For admin: show only normal users; for elder: skip other elders.
+      if (currentRole === "admin" && accounts[uname].role !== "user") continue;
+      if (currentRole === "elder" && accounts[uname].role === "elder") continue;
+      let item = document.createElement('li');
+      item.innerHTML = `${uname} - ${accounts[uname].email || "No Email"} ${accounts[uname].phone ? " - " + accounts[uname].phone : ""}`;
+      item.style.cursor = "pointer";
+      item.onclick = function() { showAccountDetails(uname); };
+      listElem.appendChild(item);
     }
-    document.getElementById('grant-premium-btn').classList.remove('hidden');
-  } else {
-    document.getElementById('toggle-admin-btn').classList.add('hidden');
-    document.getElementById('grant-premium-btn').classList.add('hidden');
   }
-  showForm('account-details-section');
-}
-function deleteAccount() {
-  let uname = currentAccountManagementUser;
-  let accounts = getAccounts();
-  if (confirm("Are you sure you want to delete account: " + uname + "?")) {
-    delete accounts[uname];
-    saveAccounts(accounts);
-    alert("Account " + uname + " has been deleted.");
-    backToAccountsList();
+  let currentAccountManagementUser = "";
+  function showAccountDetails(uname) {
+    currentAccountManagementUser = uname;
+    let accounts = getAccounts();
+    let acc = accounts[uname];
+    document.getElementById('account-details-heading').innerText = "Manage Account: " + uname;
+    document.getElementById('account-details-info').innerText =
+      "Email: " + (acc.email || "") + " | Phone: " + (acc.phone || "N/A") + " | Role: " + acc.role;
+    // Toggle Ban/Unban based on status.
+    if (acc.isBanned) {
+      document.getElementById('ban-account-btn').classList.add('hidden');
+      document.getElementById('unban-account-btn').classList.remove('hidden');
+    } else {
+      document.getElementById('ban-account-btn').classList.remove('hidden');
+      document.getElementById('unban-account-btn').classList.add('hidden');
+    }
+    let currentRole = getAccounts()[localStorage.getItem('currentUser')].role;
+      // Bug fix: Only show Delete Account and Ban Account for elder admins.
+    if (currentRole !== "elder") {
+      document.getElementById('delete-account-btn').classList.add('hidden');
+      document.getElementById('ban-account-btn').classList.add('hidden');
+    } else {
+      document.getElementById('delete-account-btn').classList.remove('hidden');
+      document.getElementById('ban-account-btn').classList.remove('hidden');
+    }
+    if (currentRole === "elder") {
+      document.getElementById('toggle-admin-btn').classList.remove('hidden');
+      if (acc.role === "admin") {
+        document.getElementById('toggle-admin-btn').innerText = "Remove Admin Access";
+      } else {
+        document.getElementById('toggle-admin-btn').innerText = "Grant Admin Access";
+      }
+      document.getElementById('grant-premium-btn').classList.remove('hidden');
+    } else {
+      document.getElementById('toggle-admin-btn').classList.add('hidden');
+      document.getElementById('grant-premium-btn').classList.add('hidden');
+    }
+    showForm('account-details-section');
   }
-}
-function banAccount() {
-  let uname = currentAccountManagementUser;
-  let choice = prompt(
-    "Choose ban reason:\n" +
-    "1) Mildly Inappropriate Username (1 day ban)\n" +
-    "2) Severely Inappropriate Username (7 day ban)\n" +
-    "3) Unapproved Premium Access (Permanent Ban)\n" +
-    "4) Spreading of Premium Access (Permanent Ban)\n" +
-    "5) Unapproved Website Spreading (30 Day Ban)\n" +
-    "6) Other (Custom duration)"
-  );
-  if (!choice) return;
-  let duration = 0;
-  let reasonText = "";
-  switch (choice) {
-    case "1":
-      duration = 1;
-      reasonText = "Mildly Inappropriate Username";
-      break;
-    case "2":
-      duration = 7;
-      reasonText = "Severely Inappropriate Username";
-      break;
-    case "3":
-      duration = -1;
-      reasonText = "Unapproved Premium Access";
-      break;
-    case "4":
-      duration = -1;
-      reasonText = "Spreading of Premium Access";
-      break;
-    case "5":
-      duration = 30;
-      reasonText = "Unapproved Website Spreading";
-      break;
-    case "6":
-      reasonText = prompt("Enter ban reason:");
-      let daysInput = prompt("Enter number of days to ban (enter 0 for permanent):");
-      duration = parseInt(daysInput);
-      if (isNaN(duration)) duration = 0;
-      break;
-    default:
-      alert("Invalid choice.");
-      return;
+  function deleteAccount() {
+    let uname = currentAccountManagementUser;
+    let accounts = getAccounts();
+    if (confirm("Are you sure you want to delete account: " + uname + "?")) {
+      delete accounts[uname];
+      saveAccounts(accounts);
+      alert("Account " + uname + " has been deleted.");
+      backToAccountsList();
+    }
   }
-  let accountsObj = getAccounts();
-  if (choice === "1" || choice === "2") {
-    let randomName = Math.floor(10000 + Math.random() * 90000).toString();
-    accountsObj[uname].originalUsername = uname;
-    accountsObj[uname].usernameChangedTo = randomName;
-  }
-  let now = Date.now();
-  let banUntil = (duration > 0) ? now + duration * 24 * 60 * 60 * 1000 : null;
-  accountsObj[uname].isBanned = true;
-  accountsObj[uname].banReason = reasonText;
-  accountsObj[uname].banUntil = banUntil;
-  saveAccounts(accountsObj);
-  alert("Account " + uname + " has been banned. Reason: " + reasonText);
-  backToAccountsList();
-}
-function unbanAccount() {
-  let uname = currentAccountManagementUser;
-  let accountsObj = getAccounts();
-  if (confirm("Are you sure you want to unban account: " + uname + "?")) {
-    accountsObj[uname].isBanned = false;
-    delete accountsObj[uname].banReason;
-    delete accountsObj[uname].banUntil;
-    saveAccounts(accountsObj);
-    alert("Account " + uname + " has been unbanned.");
-    backToAccountsList();
-  }
-}
-function toggleAdminAccess() {
-  let uname = currentAccountManagementUser;
-  let accountsObj = getAccounts();
-  let acc = accountsObj[uname];
-  if (acc.role === "admin") {
-    acc.role = "user";
-    delete acc.adminExpires;
-    saveAccounts(accountsObj);
-    alert("Admin access removed from " + uname);
-  } else {
-    let minutes = prompt("Enter the number of minutes for admin access for " + uname + ":");
-    minutes = parseInt(minutes);
-    if (isNaN(minutes) || minutes <= 0) {
-      alert("Invalid number of minutes.");
-      return;
+  function banAccount() {
+    let uname = currentAccountManagementUser;
+    let choice = prompt(
+      "Choose ban reason:\n" +
+      "1) Mildly Inappropriate Username (1 day ban)\n" +
+      "2) Severely Inappropriate Username (7 day ban)\n" +
+      "3) Unapproved Premium Access (Permanent Ban)\n" +
+      "4) Spreading of Premium Access (Permanent Ban)\n" +
+      "5) Unapproved Website Spreading (30 Day Ban)\n" +
+      "6) Other (Custom duration)"
+    );
+    if (!choice) return;
+    let duration = 0;
+    let reasonText = "";
+    switch (choice) {
+      case "1":
+        duration = 1;
+        reasonText = "Mildly Inappropriate Username";
+        break;
+      case "2":
+        duration = 7;
+        reasonText = "Severely Inappropriate Username";
+        break;
+      case "3":
+        duration = -1;
+        reasonText = "Unapproved Premium Access";
+        break;
+      case "4":
+        duration = -1;
+        reasonText = "Spreading of Premium Access";
+        break;
+      case "5":
+        duration = 30;
+        reasonText = "Unapproved Website Spreading";
+        break;
+      case "6":
+        reasonText = prompt("Enter ban reason:");
+        let daysInput = prompt("Enter number of days to ban (enter 0 for permanent):");
+        duration = parseInt(daysInput);
+        if (isNaN(duration)) duration = 0;
+        break;
+      default:
+        alert("Invalid choice.");
+        return;
+    }
+    let accountsObj = getAccounts();
+    if (choice === "1" || choice === "2") {
+      let randomName = Math.floor(10000 + Math.random() * 90000).toString();
+      accountsObj[uname].originalUsername = uname;
+      accountsObj[uname].usernameChangedTo = randomName;
     }
     let now = Date.now();
-    acc.role = "admin";
-    acc.adminExpires = now + minutes * 60000;
+    let banUntil = (duration > 0) ? now + duration * 24 * 60 * 60 * 1000 : null;
+    accountsObj[uname].isBanned = true;
+    accountsObj[uname].banReason = reasonText;
+    accountsObj[uname].banUntil = banUntil;
     saveAccounts(accountsObj);
-    alert("Admin access granted to " + uname + " for " + minutes + " minutes.");
+    alert("Account " + uname + " has been banned. Reason: " + reasonText);
+    backToAccountsList();
   }
-  backToAccountsList();
-}
-function grantPremiumAccess() {
-  let uname = currentAccountManagementUser;
-  let accountsObj = getAccounts();
-  let acc = accountsObj[uname];
-  acc.role = "premium";
-  saveAccounts(accountsObj);
-  alert("Premium access granted to " + uname + ".");
-  backToAccountsList();
-}
-function backToAccountsList() {
-  document.getElementById('account-details-section').classList.add('hidden');
-  showManageAccounts();
-}
-function backToProfile() {
-  document.getElementById('manage-accounts-section').classList.add('hidden');
-  document.getElementById('manage-requests-section').classList.add('hidden');
-  showProfile();
-}
-
-/* ------------- Manage Requests (for Elder Admins) ------------- */
-function showManageRequests() {
-  showForm('manage-requests-section');
-  loadPendingRequests();
-}
-function loadPendingRequests() {
-  // Pending Account Creation Requests
-  let pendingAccounts = getPendingAccounts();
-  let pendingList = document.getElementById('pending-accounts-list');
-  pendingList.innerHTML = "";
-  pendingAccounts.forEach((req, index) => {
-    let li = document.createElement('li');
-    li.innerText = `Username: ${req.username}, Email: ${req.email}, Phone: ${req.phone || "N/A"}`;
-    let acceptBtn = document.createElement('button');
-    acceptBtn.innerText = "Approve";
-    acceptBtn.onclick = function() { approveAccountRequest(index); };
-    let rejectBtn = document.createElement('button');
-    rejectBtn.innerText = "Reject";
-    rejectBtn.onclick = function() { rejectAccountRequest(index); };
-    li.appendChild(acceptBtn);
-    li.appendChild(rejectBtn);
-    pendingList.appendChild(li);
-  });
-  // Admin Access Requests
-  let adminReqs = getAdminRequests();
-  let adminList = document.getElementById('admin-requests-list');
-  adminList.innerHTML = "";
-  adminReqs.forEach((req, index) => {
-    let li = document.createElement('li');
-    li.innerText = `Username: ${req.username} requested admin access.`;
-    let acceptBtn = document.createElement('button');
-    acceptBtn.innerText = "Approve";
-    acceptBtn.onclick = function() { approveAdminRequest(index); };
-    let rejectBtn = document.createElement('button');
-    rejectBtn.innerText = "Reject";
-    rejectBtn.onclick = function() { rejectAdminRequest(index); };
-    li.appendChild(acceptBtn);
-    li.appendChild(rejectBtn);
-    adminList.appendChild(li);
-  });
-}
-function approveAccountRequest(idx) {
-  let pending = getPendingAccounts();
-  let approved = pending.splice(idx, 1)[0];
-  let accounts = getAccounts();
-  accounts[approved.username] = {
-    password: "defaultPassword",
-    email: approved.email,
-    role: "user",
-    bio: ""
-  };
-  saveAccounts(accounts);
-  savePendingAccounts(pending);
-  alert("Account approved for " + approved.username);
-  loadPendingRequests();
-}
-function rejectAccountRequest(idx) {
-  let pending = getPendingAccounts();
-  let rejected = pending.splice(idx, 1)[0];
-  savePendingAccounts(pending);
-  alert("Account request rejected for " + rejected.username);
-  loadPendingRequests();
-}
-function approveAdminRequest(idx) {
-  let requests = getAdminRequests();
-  let req = requests.splice(idx, 1)[0];
-  let accounts = getAccounts();
-  if (accounts[req.username]) {
-    accounts[req.username].role = "admin";
-    saveAccounts(accounts);
+  function unbanAccount() {
+    let uname = currentAccountManagementUser;
+    let accountsObj = getAccounts();
+    if (confirm("Are you sure you want to unban account: " + uname + "?")) {
+      accountsObj[uname].isBanned = false;
+      delete accountsObj[uname].banReason;
+      delete accountsObj[uname].banUntil;
+      saveAccounts(accountsObj);
+      alert("Account " + uname + " has been unbanned.");
+      backToAccountsList();
+    }
   }
-  saveAdminRequests(requests);
-  alert("Admin request approved for " + req.username);
-  loadPendingRequests();
-}
-function rejectAdminRequest(idx) {
-  let requests = getAdminRequests();
-  let req = requests.splice(idx, 1)[0];
-  saveAdminRequests(requests);
-  alert("Admin request rejected for " + req.username);
-  loadPendingRequests();
-}
-
-/* ------------- Circle Button & Onload ------------- */
-function handleCircleBtnClick() {
-  if (localStorage.getItem('currentUser')) { showProfile(); }
-  else { showLogin(); }
-}
-window.onload = function() {
-  initAccounts();
-  let currentUser = localStorage.getItem('currentUser');
-  if (currentUser) {
+  function toggleAdminAccess() {
+    let uname = currentAccountManagementUser;
+    let accountsObj = getAccounts();
+    let acc = accountsObj[uname];
+    if (acc.role === "admin") {
+      acc.role = "user";
+      delete acc.adminExpires;
+      saveAccounts(accountsObj);
+      alert("Admin access removed from " + uname);
+    } else {
+      let minutes = prompt("Enter the number of minutes for admin access for " + uname + ":");
+      minutes = parseInt(minutes);
+      if (isNaN(minutes) || minutes <= 0) {
+        alert("Invalid number of minutes.");
+        return;
+      }
+      let now = Date.now();
+      acc.role = "admin";
+      acc.adminExpires = now + minutes * 60000;
+      saveAccounts(accountsObj);
+      alert("Admin access granted to " + uname + " for " + minutes + " minutes.");
+    }
+    backToAccountsList();
+  }
+  function grantPremiumAccess() {
+    let uname = currentAccountManagementUser;
+    let accountsObj = getAccounts();
+    let acc = accountsObj[uname];
+    acc.role = "premium";
+    saveAccounts(accountsObj);
+    alert("Premium access granted to " + uname + ".");
+    backToAccountsList();
+  }
+  function backToAccountsList() {
+    document.getElementById('account-details-section').classList.add('hidden');
+    showManageAccounts();
+  }
+  function backToProfile() {
+    document.getElementById('manage-accounts-section').classList.add('hidden');
+    document.getElementById('manage-requests-section').classList.add('hidden');
     showProfile();
-  } else {
-    showLogin();
   }
-}
-  </script>
+  
+  /* ------------- Manage Requests (for Elder Admins) ------------- */
+  function showManageRequests() {
+    showForm('manage-requests-section');
+    loadPendingRequests();
+  }
+  function loadPendingRequests() {
+    // Pending Account Creation Requests
+    let pendingAccounts = getPendingAccounts();
+    let pendingList = document.getElementById('pending-accounts-list');
+    pendingList.innerHTML = "";
+    pendingAccounts.forEach((req, index) => {
+      let li = document.createElement('li');
+      li.innerText = `Username: ${req.username}, Email: ${req.email}, Phone: ${req.phone || "N/A"}`;
+      let acceptBtn = document.createElement('button');
+      acceptBtn.innerText = "Approve";
+      acceptBtn.onclick = function() { approveAccountRequest(index); };
+      let rejectBtn = document.createElement('button');
+      rejectBtn.innerText = "Reject";
+      rejectBtn.onclick = function() { rejectAccountRequest(index); };
+      li.appendChild(acceptBtn);
+      li.appendChild(rejectBtn);
+      pendingList.appendChild(li);
+    });
+    // Admin Access Requests
+    let adminReqs = getAdminRequests();
+    let adminList = document.getElementById('admin-requests-list');
+    adminList.innerHTML = "";
+    adminReqs.forEach((req, index) => {
+      let li = document.createElement('li');
+      li.innerText = `Username: ${req.username} requested admin access.`;
+      let acceptBtn = document.createElement('button');
+      acceptBtn.innerText = "Approve";
+      acceptBtn.onclick = function() { approveAdminRequest(index); };
+      let rejectBtn = document.createElement('button');
+      rejectBtn.innerText = "Reject";
+      rejectBtn.onclick = function() { rejectAdminRequest(index); };
+      li.appendChild(acceptBtn);
+      li.appendChild(rejectBtn);
+      adminList.appendChild(li);
+    });
+    // For Elder Admins: Show Newsletter, Password Reset, Username Reset Requests
+    let newsletterList = document.getElementById('newsletter-requests-list');
+    // Placeholder: implement newsletter requests retrieval as needed.
+    newsletterList.innerHTML = "<li>No newsletter signup requests at the moment.</li>";
+    let pwdResetList = document.getElementById('password-reset-requests-list');
+    pwdResetList.innerHTML = "<li>No password reset requests at the moment.</li>";
+    let unameResetList = document.getElementById('username-reset-requests-list');
+    unameResetList.innerHTML = "<li>No username reset requests at the moment.</li>";
+  }
+  function approveAccountRequest(idx) {
+    let pending = getPendingAccounts();
+    let approved = pending.splice(idx, 1)[0];
+    let accounts = getAccounts();
+    accounts[approved.username] = {
+      password: "defaultPassword",
+      email: approved.email,
+      role: "user",
+      bio: ""
+    };
+    saveAccounts(accounts);
+    savePendingAccounts(pending);
+    alert("Account approved for " + approved.username);
+    loadPendingRequests();
+  }
+  function rejectAccountRequest(idx) {
+    let pending = getPendingAccounts();
+    let rejected = pending.splice(idx, 1)[0];
+    savePendingAccounts(pending);
+    alert("Account request rejected for " + rejected.username);
+    loadPendingRequests();
+  }
+  function approveAdminRequest(idx) {
+    let requests = getAdminRequests();
+    let req = requests.splice(idx, 1)[0];
+    let accounts = getAccounts();
+    if (accounts[req.username]) {
+      accounts[req.username].role = "admin";
+      saveAccounts(accounts);
+    }
+    saveAdminRequests(requests);
+    alert("Admin request approved for " + req.username);
+    loadPendingRequests();
+  }
+  function rejectAdminRequest(idx) {
+    let requests = getAdminRequests();
+    let req = requests.splice(idx, 1)[0];
+    saveAdminRequests(requests);
+    alert("Admin request rejected for " + req.username);
+    loadPendingRequests();
+  }
+  
+  /* ------------- Circle Button & Onload ------------- */
+  function handleCircleBtnClick() {
+    if (localStorage.getItem('currentUser')) { showProfile(); }
+    else { showLogin(); }
+  }
+  window.onload = function() {
+    initAccounts();
+    let currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      showProfile();
+    } else {
+      showLogin();
+    }
+  }
+</script>
 </body>
 </html>

@@ -694,51 +694,65 @@
   }
   let currentAccountManagementUser = "";
   function showAccountDetails(uname) {
-    currentAccountManagementUser = uname;
-    let accounts = getAccounts();
-    let acc = accounts[uname];
-    document.getElementById('account-details-heading').innerText = "Manage Account: " + uname;
-    document.getElementById('account-details-info').innerText =
-      "Email: " + (acc.email || "") + " | Phone: " + (acc.phone || "N/A") + " | Role: " + acc.role;
-    // Toggle Ban/Unban based on status.
-    if (acc.isBanned) {
-      document.getElementById('ban-account-btn').classList.add('hidden');
-      document.getElementById('unban-account-btn').classList.remove('hidden');
-    } else {
-      document.getElementById('ban-account-btn').classList.remove('hidden');
-      document.getElementById('unban-account-btn').classList.add('hidden');
-    }
-    let currentRole = getAccounts()[localStorage.getItem('currentUser')].role;
-      // Bug fix: Only show Delete Account and Ban Account for elder admins.
-    if (currentRole !== "elder") {
-      document.getElementById('delete-account-btn').classList.add('hidden');
-      document.getElementById('ban-account-btn').classList.add('hidden');
-    } else {
-      document.getElementById('delete-account-btn').classList.remove('hidden');
-      document.getElementById('ban-account-btn').classList.remove('hidden');
-    }
-    if (currentRole === "elder") {
-      document.getElementById('toggle-admin-btn').classList.remove('hidden');
-      if (acc.role === "admin") {
-        document.getElementById('toggle-admin-btn').innerText = "Remove Admin Access";
-      } else {
-        document.getElementById('toggle-admin-btn').innerText = "Grant Admin Access";
-      }
-      document.getElementById('grant-premium-btn').classList.remove('hidden');
-    } else {
-      document.getElementById('toggle-admin-btn').classList.add('hidden');
-      document.getElementById('grant-premium-btn').classList.add('hidden');
-    }
-    showForm('account-details-section');
+  currentAccountManagementUser = uname;
+  const accounts = getAccounts();
+  const acc = accounts[uname];
+
+  /* ---------- If NO user is selected ---------- */
+  if (!acc) {
+    document.getElementById("account-details-heading").innerText = "No user selected";
+    document.getElementById("account-details-info").innerText  = "Select a user to manage.";
+
+    // Hide every action button when no account is selected
+    [
+      "delete-account-btn",
+      "ban-account-btn",
+      "unban-account-btn",
+      "toggle-admin-btn",
+      "grant-premium-btn"
+    ].forEach(id => document.getElementById(id).classList.add("hidden"));
+
+    showForm("account-details-section");
+    return; // stop here – nothing else to display
   }
-  function deleteAccount() {
-    let uname = currentAccountManagementUser;
-    let accounts = getAccounts();
-    if (confirm("Are you sure you want to delete account: " + uname + "?")) {
-      delete accounts[uname];
-      saveAccounts(accounts);
-      alert("Account " + uname + " has been deleted.");
-      backToAccountsList();
+
+  /* ---------- Valid user selected ---------- */
+  document.getElementById("account-details-heading").innerText =
+    "Manage Account: " + uname;
+  document.getElementById("account-details-info").innerText =
+    "Email: " + (acc.email || "") +
+    " | Phone: " + (acc.phone || "N/A") +
+    " | Role: " + acc.role;
+
+  // Toggle Ban / Unban visibility
+  if (acc.isBanned) {
+    document.getElementById("ban-account-btn").classList.add("hidden");
+    document.getElementById("unban-account-btn").classList.remove("hidden");
+  } else {
+    document.getElementById("ban-account-btn").classList.remove("hidden");
+    document.getElementById("unban-account-btn").classList.add("hidden");
+  }
+
+  // Buttons visible only for elder admins
+  const currentRole = getAccounts()[localStorage.getItem("currentUser")].role;
+  if (currentRole === "elder") {
+    document.getElementById("delete-account-btn").classList.remove("hidden");
+    document.getElementById("ban-account-btn").classList.remove("hidden");
+    document.getElementById("toggle-admin-btn").classList.remove("hidden");
+    document.getElementById("grant-premium-btn").classList.remove("hidden");
+
+    document.getElementById("toggle-admin-btn").innerText =
+      acc.role === "admin" ? "Remove Admin Access" : "Grant Admin Access";
+  } else {
+    document.getElementById("delete-account-btn").classList.add("hidden");
+    document.getElementById("ban-account-btn").classList.add("hidden");
+    document.getElementById("toggle-admin-btn").classList.add("hidden");
+    document.getElementById("grant-premium-btn").classList.add("hidden");
+  }
+
+  showForm("account-details-section");
+  }
+  
     }
   }
   function banAccount() {
